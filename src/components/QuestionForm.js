@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function QuestionForm(props) {
+function QuestionForm({questions, setQuestions}) {
   const [formData, setFormData] = useState({
     prompt: "",
     answer1: "",
@@ -10,17 +10,30 @@ function QuestionForm(props) {
     correctIndex: 0,
   });
 
-  function handleChange(event) {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  }
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
-  }
+
+    // creating a new question
+    const newQuestion = {
+      prompt: formData.prompt,
+      answers: [formData.answer1, formData.answer2, formData.answer3, formData.answer4],
+      correctIndex: parseInt(formData.correctIndex)
+    }
+
+    // fetching post data
+    fetch("http://localhost:4000/questions", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(newQuestion)
+    })
+    .then((res) => res.json())
+    .then((data) => {
+    setQuestions([...questions, data])}
+    
+  )}
 
   return (
     <section>
@@ -32,7 +45,7 @@ function QuestionForm(props) {
             type="text"
             name="prompt"
             value={formData.prompt}
-            onChange={handleChange}
+            onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})}
           />
         </label>
         <label>
@@ -41,7 +54,7 @@ function QuestionForm(props) {
             type="text"
             name="answer1"
             value={formData.answer1}
-            onChange={handleChange}
+            onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})}
           />
         </label>
         <label>
@@ -50,7 +63,7 @@ function QuestionForm(props) {
             type="text"
             name="answer2"
             value={formData.answer2}
-            onChange={handleChange}
+            onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})}
           />
         </label>
         <label>
@@ -59,7 +72,7 @@ function QuestionForm(props) {
             type="text"
             name="answer3"
             value={formData.answer3}
-            onChange={handleChange}
+            onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})}
           />
         </label>
         <label>
@@ -68,7 +81,7 @@ function QuestionForm(props) {
             type="text"
             name="answer4"
             value={formData.answer4}
-            onChange={handleChange}
+            onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})}
           />
         </label>
         <label>
@@ -76,7 +89,7 @@ function QuestionForm(props) {
           <select
             name="correctIndex"
             value={formData.correctIndex}
-            onChange={handleChange}
+            onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})}
           >
             <option value="0">{formData.answer1}</option>
             <option value="1">{formData.answer2}</option>
