@@ -17,14 +17,21 @@ function QuestionList({questions, setQuestions}) {
     .then((res) => res.json())
    
   }
-
   return (
     <section>
       
       <h1>Quiz Questions</h1>
       <ul>
-        {questions.map((question) =>  <QuestionItem num={question.id} key={question.id} question={question} onDelete={() => handleDelete(question.id)} setQuestions= {setQuestions} questions={questions}/>
-        )}
+      {Array.isArray(questions) && questions.map((question) => (
+    <QuestionItem
+        num={question.id}
+        key={question.id}
+        question={question}
+        onDelete={() => handleDelete(question.id)}
+        setQuestions={setQuestions}
+        questions={questions}
+    />
+))}
       </ul>
     </section>
   );

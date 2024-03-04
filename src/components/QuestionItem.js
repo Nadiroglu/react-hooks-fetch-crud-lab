@@ -20,7 +20,7 @@ function QuestionItem({ question, onDelete, num, setQuestions, questions}) {
     })
     .then((res) => res.json())
     .then((data) => {
-      setQuestions(data.)
+      setQuestions(data)
     })
 
   return (
